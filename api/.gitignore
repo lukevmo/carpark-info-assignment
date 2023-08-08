@@ -39,3 +39,6 @@ swagger.json
 
 # Environtment variable
 .env
+
+# data
+data/*

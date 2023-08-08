@@ -7,9 +7,10 @@ import { PipeModule } from '@src/pipes/pipe.module';
 import { ConfigurationModule } from '../config/configuration.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { DatabaseModule } from '../database/database.module';
 
 @Module({
-  imports: [ConfigurationModule, GuardModule, PipeModule, InterceptorModule],
+  imports: [ConfigurationModule, GuardModule, PipeModule, InterceptorModule, DatabaseModule],
   controllers: [AppController],
   providers: [AppService],
 })
