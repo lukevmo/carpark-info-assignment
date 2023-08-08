@@ -41,4 +41,26 @@ export class CarparkInfoRepository {
       await queryRunner.release();
     }
   }
+
+  async initDatabase(data: CarparkInfoTransformDataDto[]) {
+    this.logger.log('=== Start Initiate Database ===');
+    const queryRunner = await this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    const carparkInfoData: CarparkInfo[] = [];
+    for (const element of data) {
+      const carparkInfo = queryRunner.manager.create(CarparkInfo, element) as CarparkInfo;
+      carparkInfoData.push(carparkInfo);
+    }
+
+    await queryRunner.startTransaction();
+    try {
+      await queryRunner.manager.save(carparkInfoData, { chunk: 50 });
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error('Error when init db: ', error);
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+  }
 }

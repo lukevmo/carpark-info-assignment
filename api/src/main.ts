@@ -8,7 +8,7 @@ import { initializeApp, initializeSwagger } from './share/bootstrap';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
 
-  initializeApp(app);
+  await initializeApp(app);
   initializeSwagger(app);
 
   const configService = app.get(ConfigService);

@@ -4,8 +4,9 @@ import { urlencoded, Request, Response } from 'express';
 import helmet from 'helmet';
 import * as httpContext from 'express-http-context';
 import * as fs from 'fs';
+import { CarparkInfoService } from '@src/modules/carpark-info/carpark-info.service';
 
-export function initializeApp(app: INestApplication) {
+export async function initializeApp(app: INestApplication) {
   app.use(urlencoded({ extended: true, limit: '10mb' }));
   app.use(helmet());
   app.use(httpContext.middleware);
@@ -15,6 +16,9 @@ export function initializeApp(app: INestApplication) {
   });
   app.enableCors({ origin: '*', allowedHeaders: '*' });
   app.setGlobalPrefix('/api/carpark-info');
+
+  const carparkInfoService = app.get(CarparkInfoService);
+  await carparkInfoService.initDatabase();
 }
 
 export function initializeSwagger(app: INestApplication) {
