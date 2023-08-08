@@ -12,6 +12,8 @@ import * as Joi from 'joi';
       validationSchema: Joi.object({
         [EEnvType.NODE_ENV]: Joi.string().valid(...ENVIRONMENTS),
         [EEnvType.PORT]: Joi.number().default(3000),
+        [EEnvType.BCRYPT_SALT_ROUNDS]: Joi.number().default(14),
+        [EEnvType.JWT_SECRET_KEY]: Joi.string().required(),
       }),
     }),
   ],

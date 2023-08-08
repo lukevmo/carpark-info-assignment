@@ -13,6 +13,7 @@ export class User {
     name: 'Username',
     type: 'varchar',
     length: '255',
+    unique: true,
   })
   username: string;
 

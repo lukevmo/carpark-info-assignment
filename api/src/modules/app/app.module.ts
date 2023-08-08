@@ -13,6 +13,7 @@ import { CronTaskModule } from '../cron-task/cron-task.module';
 import { CarparkInfoModule } from '../carpark-info/carpark-info.module';
 import { UserModule } from '../user/user.module';
 import { WishListModule } from '../wish-list/wish-list.module';
+import { TokenModule } from '../token/token.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { WishListModule } from '../wish-list/wish-list.module';
     ScheduleModule.forRoot(),
     CronTaskModule,
     CronTaskModule,
+    TokenModule,
     CarparkInfoModule,
     UserModule,
     WishListModule,

@@ -1,4 +1,6 @@
 export enum EEnvType {
   NODE_ENV = 'NODE_ENV',
   PORT = 'PORT',
+  BCRYPT_SALT_ROUNDS = 'BCRYPT_SALT_ROUNDS',
+  JWT_SECRET_KEY = 'JWT_SECRET_KEY',
 }
