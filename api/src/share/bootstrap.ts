@@ -26,7 +26,7 @@ export function initializeSwagger(app: INestApplication) {
   const options = new DocumentBuilder()
     .setTitle('Carpark Info API')
     .setDescription('API specification for Carpark Info Service | [swagger.json](swagger.json)')
-    .addBearerAuth({ in: 'header', name: 'access-token', type: 'apiKey' })
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

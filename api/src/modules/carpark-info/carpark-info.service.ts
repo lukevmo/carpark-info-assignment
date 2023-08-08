@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CarparkInfoRepository } from './carpark-info.repository';
 import { ICarparkInfoRawCsv2JsonData } from './carpark-info.interface';
-import { CarparkInfoTransformDataDto } from './carpark-info.dto';
+import {
+  CarparkInfoTransformDataDto,
+  GetListOfCarparkInfoDto,
+  ListOfCarparkDataDto,
+  ListOfCarparkResponseDto,
+} from './carpark-info.dto';
 
 import * as csv from 'csvtojson';
 import { join } from 'path';
@@ -53,5 +58,13 @@ export class CarparkInfoService {
       };
     });
     return this.carparkInfoRepository.syncDatabase(transformData);
+  }
+
+  async getListOfCarpark(query: GetListOfCarparkInfoDto) {
+    const [data, total] = await this.carparkInfoRepository.getListOfCarpark(query);
+    if (!data.length) return [];
+
+    const listOfCarparkInfo = data.map(item => new ListOfCarparkDataDto(item));
+    return new ListOfCarparkResponseDto(listOfCarparkInfo, total);
   }
 }
