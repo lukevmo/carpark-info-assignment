@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { compare, hash } from 'bcrypt';
 
-import { AddFavoriteCarparkBodyRequestDto, AuthBodyRequestDto } from './user.dto';
+import {
+  AddFavoriteCarparkBodyRequestDto,
+  AuthBodyRequestDto,
+  GetListFavoriteCarparkQueryDto,
+  ListFavoriteCarparkResponseDto,
+  WishListDataDto,
+} from './user.dto';
 import { UserRepository } from './user.repository';
 import { httpBadRequest, httpNotFound, httpUnauthorized } from '@src/share/http-exception';
 import { ConfigService } from '@nestjs/config';
@@ -10,6 +16,7 @@ import { IUserInfo } from './user.interface';
 import { TokenService } from '../token/token.service';
 import { WishListService } from '../wish-list/wish-list.service';
 import { CarparkInfoService } from '../carpark-info/carpark-info.service';
+import { DEFAULT_LIMIT } from '@src/constants/constant';
 
 @Injectable()
 export class UserService {
@@ -79,5 +86,30 @@ export class UserService {
 
     const data = await this.wishListService.addFavoriteCarparkOfUser(userId, body.carparkNoId);
     return data;
+  }
+
+  async getListFavoriteCarpark(userId: number, query: GetListFavoriteCarparkQueryDto) {
+    const { page = 1, limit = DEFAULT_LIMIT } = query;
+    const user = await this.userRepository.getRepository().findOne({
+      where: {
+        id: userId,
+      },
+    });
+    if (!user) httpUnauthorized('User not found!');
+
+    const [data, total] = await this.wishListService.getListFavoriteCarpark(userId, page, limit);
+    const favoriteCarparkData = data.map(item => new WishListDataDto(item));
+    return new ListFavoriteCarparkResponseDto(favoriteCarparkData, total);
+  }
+
+  async deleteFavoriteCarpark(userId: number, wishListId: number) {
+    const user = await this.userRepository.getRepository().findOne({
+      where: {
+        id: userId,
+      },
+    });
+    if (!user) httpUnauthorized('User not found!');
+
+    return this.wishListService.deleteFavoriteCarpark(userId, wishListId);
   }
 }

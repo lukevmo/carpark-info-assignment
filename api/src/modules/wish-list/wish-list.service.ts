@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { WishListRepository } from './wish-list.repository';
-import { httpBadRequest } from '@src/share/http-exception';
+import { httpBadRequest, httpNotFound } from '@src/share/http-exception';
 import { IWishListData } from './wish-list.interface';
 
 @Injectable()
@@ -22,5 +22,21 @@ export class WishListService {
     };
     const newFavoriteCarpark = await this.wishListRepository.getRepository().save(data);
     return newFavoriteCarpark;
+  }
+
+  getListFavoriteCarpark(userId: number, page: number, limit: number) {
+    return this.wishListRepository.getListFavoriteCarpark(userId, page, limit);
+  }
+
+  async deleteFavoriteCarpark(userId: number, wishListId: number) {
+    const existFavoriteCarpark = await this.wishListRepository.getRepository().findOne({
+      where: {
+        id: wishListId,
+        userId: userId,
+      },
+    });
+    if (!existFavoriteCarpark) httpNotFound('The carpark is not found!');
+
+    return this.wishListRepository.getRepository().remove(existFavoriteCarpark);
   }
 }

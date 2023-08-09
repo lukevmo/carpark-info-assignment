@@ -11,8 +11,7 @@ import { join } from 'path';
       useFactory: async (configService: ConfigService) => {
         return {
           type: 'sqlite',
-          database: join(__dirname, '../../..', 'data/data.db'),
-          // database: ':memory:',
+          database: ':memory:',
           logging: true,
           entities: ['dist/models/*.entity.js'],
           synchronize: true,

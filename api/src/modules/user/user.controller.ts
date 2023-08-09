@@ -1,8 +1,19 @@
-import { Body, ClassSerializerInterceptor, Controller, Post, Request, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Post,
+  Query,
+  Request,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { GuardPublic } from '@src/guards/guard.decorator';
-import { AddFavoriteCarparkBodyRequestDto, AuthBodyRequestDto } from './user.dto';
+import { AddFavoriteCarparkBodyRequestDto, AuthBodyRequestDto, GetListFavoriteCarparkQueryDto } from './user.dto';
 
 @Controller('user')
 @ApiTags('User')
@@ -27,5 +38,22 @@ export class UserController {
   addFavoriteCarpark(@Request() request, @Body() body: AddFavoriteCarparkBodyRequestDto) {
     const userId = request?.user?.id || '';
     return this.userService.addFavoriteCarpark(userId, body);
+  }
+
+  @Get('favorite-carpark')
+  @ApiBearerAuth()
+  @UseInterceptors(ClassSerializerInterceptor)
+  getListFavoriteCarpark(@Request() request, @Query() query: GetListFavoriteCarparkQueryDto) {
+    const userId = request?.user?.id || '';
+    return this.userService.getListFavoriteCarpark(userId, query);
+  }
+
+  @Delete('favorite-carpark/:id')
+  @ApiBearerAuth()
+  @HttpCode(204)
+  @UseInterceptors(ClassSerializerInterceptor)
+  deleteFavoriteCarpark(@Request() request, @Query('id') id: number) {
+    const userId = request?.user?.id || '';
+    return this.userService.deleteFavoriteCarpark(userId, id);
   }
 }

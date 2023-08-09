@@ -42,3 +42,4 @@ swagger.json
 
 # data
 data/*
+/data
