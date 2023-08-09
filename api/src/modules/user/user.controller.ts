@@ -10,10 +10,15 @@ import {
   Request,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { GuardPublic } from '@src/guards/guard.decorator';
-import { AddFavoriteCarparkBodyRequestDto, AuthBodyRequestDto, GetListFavoriteCarparkQueryDto } from './user.dto';
+import {
+  AddFavoriteCarparkBodyRequestDto,
+  AuthBodyRequestDto,
+  GetListFavoriteCarparkQueryDto,
+  ListFavoriteCarparkResponseDto,
+} from './user.dto';
 
 @Controller('user')
 @ApiTags('User')
@@ -42,6 +47,7 @@ export class UserController {
 
   @Get('favorite-carpark')
   @ApiBearerAuth()
+  @ApiOkResponse({ type: ListFavoriteCarparkResponseDto })
   @UseInterceptors(ClassSerializerInterceptor)
   getListFavoriteCarpark(@Request() request, @Query() query: GetListFavoriteCarparkQueryDto) {
     const userId = request?.user?.id || '';
