@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Request } from '@nestjs/common';
+import { ClassSerializerInterceptor, Controller, Get, Query, Request, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CarparkInfoService } from './carpark-info.service';
 import { GetListOfCarparkInfoDto } from './carpark-info.dto';
@@ -10,6 +10,7 @@ export class CarparkInfoController {
 
   @Get()
   @ApiBearerAuth()
+  @UseInterceptors(ClassSerializerInterceptor)
   getListOfCarpark(@Request() request, @Query() query: GetListOfCarparkInfoDto) {
     return this.carparkInfoService.getListOfCarpark(query);
   }

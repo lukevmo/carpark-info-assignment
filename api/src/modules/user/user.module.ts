@@ -5,9 +5,11 @@ import { UserService } from './user.service';
 import { UserRepository } from './user.repository';
 import { UserController } from './user.controller';
 import { TokenModule } from '../token/token.module';
+import { WishListModule } from '../wish-list/wish-list.module';
+import { CarparkInfoModule } from '../carpark-info/carpark-info.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), TokenModule],
+  imports: [TypeOrmModule.forFeature([User]), TokenModule, CarparkInfoModule, WishListModule],
   providers: [UserService, UserRepository],
   controllers: [UserController],
   exports: [UserService],

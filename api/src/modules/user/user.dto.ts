@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { toTrimString } from '@src/share/transform';
-import { Transform } from 'class-transformer';
+import { Exclude, Expose, Transform } from 'class-transformer';
 import { IsNotEmpty, IsString, NotContains } from 'class-validator';
 
 export class AuthBodyRequestDto {
@@ -16,4 +16,14 @@ export class AuthBodyRequestDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+}
+
+@Exclude()
+export class AddFavoriteCarparkBodyRequestDto {
+  @ApiProperty()
+  @Expose()
+  @Transform(toTrimString)
+  @IsString()
+  @IsNotEmpty()
+  carparkNoId: string;
 }

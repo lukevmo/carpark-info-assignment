@@ -16,6 +16,10 @@ export class CarparkInfoRepository {
     private readonly carparkInfoRepository: Repository<CarparkInfo>,
   ) {}
 
+  getRepository() {
+    return this.carparkInfoRepository;
+  }
+
   async syncDatabase(data: CarparkInfoTransformDataDto[]) {
     this.logger.log('=== Start Synchronize Database ===');
     const queryRunner = this.dataSource.createQueryRunner();
@@ -66,7 +70,7 @@ export class CarparkInfoRepository {
   }
 
   getListOfCarpark(query: GetListOfCarparkInfoDto) {
-    const { page, limit } = query;
+    const { page = 1, limit = DEFAULT_LIMIT } = query;
     const queryBuilder = this.carparkInfoRepository.createQueryBuilder(this.alias);
 
     queryBuilder.where(`${this.alias}.carParkNo IS NOT NULL`);

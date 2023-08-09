@@ -11,6 +11,8 @@ import {
 import * as csv from 'csvtojson';
 import { join } from 'path';
 import { getExecuteFile } from '../cron-task/cron-task.util';
+import { CarparkInfo } from '@src/models/carpark-info.entity';
+import { FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class CarparkInfoService {
@@ -58,6 +60,10 @@ export class CarparkInfoService {
       };
     });
     return this.carparkInfoRepository.syncDatabase(transformData);
+  }
+
+  findOneWithOptions(optionsQuery: FindOneOptions<CarparkInfo>) {
+    return this.carparkInfoRepository.getRepository().findOne(optionsQuery);
   }
 
   async getListOfCarpark(query: GetListOfCarparkInfoDto) {
